@@ -1,18 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
-  //   const searchParams = req.nextUrl.searchParams;
+  // const searchParams = req.nextUrl.searchParams;
   //   const id: any = searchParams.get("id");
   //   const idAsNumber = parseInt(id);
   //   const nextId = idAsNumber + 1;
-  console.log('req.geo', req.geo)
+  const country = req.headers.get("country");
+  const city = req.headers.get("city");
+  const region = req.headers.get("region");
+  console.log("country", country);
+  console.log("city", city);
+  console.log("region", region);
 
-  if (req.geo?.country === "KR") {
+  if (country === "KR") {
     return new NextResponse(`<!DOCTYPE html><html><head>
     <title>In Korea</title>
     <meta property="fc:frame" content="vNext" />
     <meta property="fc:frame:image" content="https://lh3.googleusercontent.com/u/0/drive-viewer/AEYmBYRNvTdXHTpPo7iU_nFEUTsPA6CnkzvLBNVauB4nhSOrE-rwTF_Z7pcHfFWZ5YRPOwNLdxKwYENYhzgEIbGfaQqYlJ15Uw=w2998-h1858" />
-    <meta property="fc:frame:button:1" content="You are in Korea ,${req.geo?.city}" />
+    <meta property="fc:frame:button:1" content="You are in Korea ,${city}, ${region}" />
     <meta property="fc:frame:button:1:action" content="post_redirect" />
     <meta property="fc:frame:post_url" content="${process.env.NEXT_PUBLIC_BASE_URL}/api/end" />
   </head></html>`);

@@ -3,30 +3,29 @@ import { NextRequest, NextResponse } from "next/server";
 
 // run only on homepage
 export const config = {
-  matcher: "/",
+  matcher: "/api/frame",
 };
 
-export async function middleware(req: NextRequest) {
-  // return NextResponse.json({ hello: "helloworld" });
+export function middleware(req: NextRequest) {
   const { nextUrl: url, geo } = req;
   const country = geo?.country || "US";
   const city = geo?.city || "San Francisco";
   const region = geo?.region || "CA";
 
-  //   const countryInfo = countries.find((x) => x.cca2 === country)
+  // Clone request headers
+  const headers = new Headers(req.headers);
+  // Add a new request header
+  headers.set("country", country);
+  headers.set("city", city);
+  headers.set("region", region);
 
-  //   const currencyCode = Object.keys(countryInfo.currencies)[0]
-  //   const currency = countryInfo.currencies[currencyCode]
-  //   const languages = Object.values(countryInfo.languages).join(', ')
+  const response = NextResponse.next({
+    // New option `request.headers` which accepts a Headers object
+    // overrides request headers with the specified new ones.
+    request: {
+      headers,
+    },
+  });
 
-  url.searchParams.set("country", country);
-  url.searchParams.set("city", city);
-  url.searchParams.set("region", region);
-  //   url.searchParams.set("currencyCode", currencyCode);
-  //   url.searchParams.set("currencySymbol", currency.symbol);
-  //   url.searchParams.set("name", currency.name);
-  //   url.searchParams.set("languages", languages);
-  console.log("country", country);
-
-  return NextResponse.rewrite(url);
+  return response;
 }

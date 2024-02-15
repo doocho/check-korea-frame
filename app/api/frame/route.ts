@@ -5,6 +5,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   //   const id: any = searchParams.get("id");
   //   const idAsNumber = parseInt(id);
   //   const nextId = idAsNumber + 1;
+  console.log('req.geo', req.geo)
 
   if (req.geo?.country === "KR") {
     return new NextResponse(`<!DOCTYPE html><html><head>
